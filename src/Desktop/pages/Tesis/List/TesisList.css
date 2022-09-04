@@ -1,0 +1,6 @@
+.checklists-import-root {
+    position: absolute;
+    inset: 0;
+    padding: 24px;
+    overflow: auto;
+}

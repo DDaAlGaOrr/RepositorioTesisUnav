@@ -1,0 +1,49 @@
+.app-root-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+}
+.app-content {
+    position: relative;
+    overflow: hidden;
+}
+.ant-layout-header {
+    background-color: #0f6961;
+}
+.app-form-last-item {
+    margin-bottom: 0;
+}
+
+.app-align-center {
+    text-align: center;
+}
+
+.app-align-right {
+    text-align: right;
+}
+
+.app-no-margin-right {
+    margin-right: 0px;
+}
+
+.app-no-margin-bottom {
+    margin-bottom: 0px;
+}
+
+.app-margin-top {
+    margin-top: 24px;
+}
+
+.app-margin-bottom {
+    margin-bottom: 24px;
+
+    margin-top: 15px;
+}
+
+.app-margin-bottom {
+    margin-bottom: 15px;
+}
+
+.app-no-padding-bottom {
+    padding-bottom: 0px;
+}

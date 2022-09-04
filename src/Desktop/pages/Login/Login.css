@@ -1,0 +1,13 @@
+.authentication-page-root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+}
+.authentication-page-card {
+    max-width: 400px;
+    width: 100%;
+    margin: 5px;
+    text-align: center;
+}
