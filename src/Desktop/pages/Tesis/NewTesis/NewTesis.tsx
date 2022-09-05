@@ -27,6 +27,7 @@ const NewTesis: FunctionComponent = () => {
     }
     const handleSubmit = async (values: any) => {
         const result = await uploadTesisFile(firestore, values, tesisFile)
+        console.log(result)
     }
     return (
         <div className="new-tesis-root">
