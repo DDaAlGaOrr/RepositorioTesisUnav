@@ -1,7 +1,5 @@
 import { Button, Card, Form, Input, Space } from 'antd'
-
 import { signInWithEmailAndPassword } from 'firebase/auth'
-
 import { FunctionComponent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from 'reactfire'
@@ -15,7 +13,6 @@ const Login: FunctionComponent = () => {
     const onFinish = async (values: any) => {
         await signInWithEmailAndPassword(auth, values.username, values.password)
             .then(() => {
-                console.log('login!!!')
                 navigate('/newTesis')
             })
             .catch((error) => {

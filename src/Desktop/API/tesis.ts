@@ -1,10 +1,8 @@
-import { Firestore, addDoc, collection } from 'firebase/firestore'
-import { initializeApp } from 'firebase/app'
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { addDoc, collection, Firestore } from 'firebase/firestore'
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
-import firebaseConfig from '../../firebaseConfig'
-import { Tesis } from '../../Types/tesis'
 import { CollectionName } from '../../Types/common'
+import { Tesis } from '../../Types/tesis'
 
 export const uploadTesisFile = async (firestore: Firestore, newTesis: Tesis, file: any) => {
     try {
@@ -19,16 +17,12 @@ export const uploadTesisFile = async (firestore: Firestore, newTesis: Tesis, fil
 }
 export const addtesisData = async (firestore: Firestore, newTesis: Tesis, urlTesis: any): Promise<string | null> => {
     try {
-        console.log(newTesis.schoolName)
-        console.log(newTesis.description)
-        console.log(urlTesis)
         const tesisData: Tesis = {
             schoolName: newTesis.schoolName,
             description: newTesis.description,
             file: urlTesis
         }
         const tesisDataCopy = JSON.parse(JSON.stringify(tesisData))
-        console.log(tesisDataCopy)
         const tesisReference = await addDoc(collection(firestore, CollectionName.Tesis), tesisDataCopy)
         return tesisReference.id
     } catch (error) {}

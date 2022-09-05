@@ -2,11 +2,10 @@ import { Button, Card, Form, Input, Select, Space } from 'antd'
 import { signOut } from 'firebase/auth'
 import { FunctionComponent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from 'reactfire'
-import { useFirestore } from 'reactfire'
+import { useAuth, useFirestore } from 'reactfire'
 
-import './NewTesis.css'
 import { uploadTesisFile } from '../../../API/tesis'
+import './NewTesis.css'
 
 const { Option } = Select
 const { TextArea } = Input
@@ -28,7 +27,6 @@ const NewTesis: FunctionComponent = () => {
     }
     const handleSubmit = async (values: any) => {
         const result = await uploadTesisFile(firestore, values, tesisFile)
-        console.log(result)
     }
     return (
         <div className="new-tesis-root">
