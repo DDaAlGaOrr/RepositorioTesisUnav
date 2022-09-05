@@ -1,54 +1,69 @@
 import { Button, Card, Form, Input, Select, Space } from 'antd'
 import { signOut } from 'firebase/auth'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth, useUser } from 'reactfire'
+import { useAuth } from 'reactfire'
+import { useFirestore } from 'reactfire'
 
 import './NewTesis.css'
+import { uploadTesisFile } from '../../../API/tesis'
 
 const { Option } = Select
 const { TextArea } = Input
 
 const NewTesis: FunctionComponent = () => {
-    const userSession = useUser()
     const Auth = useAuth()
     const navigate = useNavigate()
+    const firestore = useFirestore()
+    const [tesisFile, setTesisFile] = useState()
     const handleClickSeeTesis = () => {
         navigate('/')
     }
-
     const handleClickLogOut = () => {
         signOut(Auth)
         navigate('/login')
     }
-    console.log(userSession)
-
+    const handleFile = (e: any) => {
+        setTesisFile(e.target.files[0])
+    }
+    const handleSubmit = async (values: any) => {
+        const result = await uploadTesisFile(firestore, values, tesisFile)
+        console.log(result)
+    }
     return (
         <div className="new-tesis-root">
             <Card>
                 <Space direction="vertical">
-                    <Form>
-                        <Form.Item>
+                    <Form onFinish={handleSubmit} name="uploadTesis">
+                        <Form.Item name="schoolName">
                             <Select defaultValue="Selecciona una carrera" style={{ width: 500 }}>
                                 <Option value="Ingenieria en sistemas">Ingenieria en sistemas </Option>
                                 <Option value="Ciencias de la educacion">Ciencias de la educacion</Option>
                             </Select>
                         </Form.Item>
-                        <Form.Item>
-                            <Input type={'file'} style={{ width: 500 }} />
+                        <Form.Item name="pdfTesis">
+                            <Input type={'file'} style={{ width: 500 }} onChange={handleFile} />
                         </Form.Item>
-                        <Form.Item>
+                        <Form.Item name="description">
                             <TextArea placeholder="Descripción" rows={4} style={{ width: 500 }} />
                         </Form.Item>
                         <div className="app-align-center">
                             <Space size={15}>
-                                <Button type="primary" onClick={handleClickLogOut}>
-                                    Cerrar sesión
-                                </Button>
-                                <Button type="primary" onClick={handleClickSeeTesis}>
-                                    Ver lista de tesis
-                                </Button>
-                                <Button type="primary">Subir</Button>
+                                <Form.Item>
+                                    <Button type="primary" onClick={handleClickLogOut}>
+                                        Cerrar sesión
+                                    </Button>
+                                </Form.Item>
+                                <Form.Item>
+                                    <Button type="primary" onClick={handleClickSeeTesis}>
+                                        Ver lista de tesis
+                                    </Button>
+                                </Form.Item>
+                                <Form.Item>
+                                    <Button htmlType="submit" type="primary">
+                                        Subir
+                                    </Button>
+                                </Form.Item>
                             </Space>
                         </div>
                     </Form>

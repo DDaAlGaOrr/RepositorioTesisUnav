@@ -13,7 +13,6 @@ import NewTesis from './pages/Tesis/NewTesis/NewTesis'
 const App: FunctionComponent = () => {
     const { Header, Content } = Layout
     const sessionUser = useUser()
-    console.log(sessionUser)
 
     return (
         <Layout>
@@ -22,7 +21,6 @@ const App: FunctionComponent = () => {
             </Header>
             <Content>
                 <Routes>
-                    {/* <Route path="/notAuthorizedPage" element={} /> */}
                     <Route path="/newTesis" element={sessionUser.data ? <NewTesis /> : <NotAuthorizedPage />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/" element={<TesisList />} />

@@ -35,7 +35,6 @@ const Login: FunctionComponent = () => {
                             labelCol={{ span: 8 }}
                             wrapperCol={{ span: 16 }}
                             initialValues={{ remember: true }}
-                            autoComplete="off"
                             style={{ textAlign: 'center' }}
                         >
                             <Form.Item label="Usuario" name="username" rules={[{ required: true, message: 'Ingrese un usuario' }]}>
