@@ -1,4 +1,4 @@
-import { Button, Card, Input, Table } from 'antd'
+import { Button, Card, Input, Table, Space } from 'antd'
 import { FunctionComponent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ColumnsType } from 'antd/es/table'
@@ -7,13 +7,18 @@ import { useFirestore } from 'reactfire'
 import { getTesis } from '../../../API/tesis'
 import { Tesis } from '../../../../Types/tesis'
 import './TesisList.css'
-import { render } from '@testing-library/react'
+
+interface TesisListFilters {
+    schoolName: string
+    description: string
+}
 
 const TesisList: FunctionComponent = () => {
     const { Search } = Input
     const firestore = useFirestore()
     const navigate = useNavigate()
     const [tesis, setTesis] = useState<Tesis[]>([])
+    const [filters, setFilters] = useState<TesisListFilters>({ schoolName: '', description: '' })
 
     useEffect(() => {
         getData()
@@ -65,10 +70,41 @@ const TesisList: FunctionComponent = () => {
                     Agregar nueva tesis
                 </Button>
             </div>
-            <div className="app-align-center app-margin-bottom">
-                <Search style={{ width: '550px' }} placeholder="Buscar Tesis" onSearch={onSearch} enterButton />
+            <div className="app-margin-bottom filters-display-flex" style={{ width: '750px' }}>
+                <Space size={15}>
+                    <Input
+                        placeholder="Buscar por descripción"
+                        onChange={(event) => setFilters({ ...filters, description: event.target.value })}
+                        allowClear
+                    />
+                    <Input
+                        placeholder="Buscar escuela"
+                        onChange={(event) => setFilters({ ...filters, schoolName: event.target.value })}
+                        allowClear
+                    />
+                </Space>
             </div>
-            <Table<Tesis> rowKey="id" size="small" pagination={false} bordered dataSource={tesis} columns={columns} />
+            <Table<Tesis>
+                rowKey="id"
+                size="small"
+                pagination={false}
+                bordered
+                dataSource={tesis.filter((_tesis) => {
+                    if (filters.description) {
+                        if (!_tesis.description.toLowerCase().includes(filters.description.toLowerCase())) {
+                            return false
+                        }
+                    }
+                    if (filters.schoolName) {
+                        if (!_tesis.schoolName.toLowerCase().includes(filters.schoolName.toLowerCase())) {
+                            return false
+                        }
+                    }
+
+                    return true
+                })}
+                columns={columns}
+            />
         </Card>
     )
 }

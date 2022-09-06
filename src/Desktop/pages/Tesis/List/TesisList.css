@@ -4,3 +4,7 @@
     padding: 24px;
     overflow: auto;
 }
+.filters-display-flex {
+    display: flex;
+    align-items: center;
+}
