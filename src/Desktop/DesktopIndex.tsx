@@ -9,9 +9,6 @@ const DesktopIndex: FunctionComponent = () => {
     return (
         <div>
             <BrowserRouter>
-                {/* <AuthenticationGuard authenticationNode={<Login />}>
-                    <NewTesis />
-                </AuthenticationGuard> */}
                 <App />
             </BrowserRouter>
         </div>

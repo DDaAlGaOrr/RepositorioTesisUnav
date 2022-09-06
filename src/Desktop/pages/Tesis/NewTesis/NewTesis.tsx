@@ -37,7 +37,13 @@ const NewTesis: FunctionComponent = () => {
                         <Form.Item name="schoolName">
                             <Select defaultValue="Selecciona una carrera" style={{ width: 500 }}>
                                 <Option value="Ingenieria en sistemas">Ingenieria en sistemas </Option>
-                                <Option value="Ciencias de la educacion">Ciencias de la educacion</Option>
+                                <Option value="Nutrición">Nutrición</Option>
+                                <Option value="Teología">Teología</Option>
+                                <Option value="Diseño Gráfico">Diseño Gráfico</Option>
+                                <Option value="Enfermeria">Enfermeria</Option>
+                                <Option value="Gastronomía">Gastronomía</Option>
+                                <Option value="Contabilidad">Contabilidad</Option>
+                                <Option value="Maestria">Maestria</Option>
                             </Select>
                         </Form.Item>
                         <Form.Item name="pdfTesis">
