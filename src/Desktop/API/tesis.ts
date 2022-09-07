@@ -1,8 +1,8 @@
-import { addDoc, collection, Firestore, query, getDocs } from 'firebase/firestore'
+import { addDoc, collection, Firestore, getDocs, query } from 'firebase/firestore'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
 import { CollectionName } from '../../Types/common'
-import { Tesis, DEFAULT_TESIS } from '../../Types/tesis'
+import { DEFAULT_TESIS, Tesis } from '../../Types/tesis'
 
 export const getTesis = async (firestore: Firestore): Promise<Tesis[]> => {
     const TesisCollection = collection(firestore, CollectionName.Tesis)

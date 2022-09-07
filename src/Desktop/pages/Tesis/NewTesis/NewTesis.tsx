@@ -1,9 +1,10 @@
-import { Button, Card, Form, Input, Select, Space } from 'antd'
+import { Button, Card, Form, Input, message, Select, Space } from 'antd'
 import { signOut } from 'firebase/auth'
 import { FunctionComponent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth, useFirestore } from 'reactfire'
 
+import { SchoolNames } from '../../../../Types/tesis'
 import { uploadTesisFile } from '../../../API/tesis'
 import './NewTesis.css'
 
@@ -15,7 +16,9 @@ const NewTesis: FunctionComponent = () => {
     const navigate = useNavigate()
     const firestore = useFirestore()
     const [tesisFile, setTesisFile] = useState()
-    const handleClickSeeTesis = () => {
+    const [form] = Form.useForm()
+
+    const handleClickReturnToList = () => {
         navigate('/')
     }
     const handleClickLogOut = () => {
@@ -25,25 +28,28 @@ const NewTesis: FunctionComponent = () => {
     const handleFile = (e: any) => {
         setTesisFile(e.target.files[0])
     }
+    const messageSuccess = () => {
+        message.success('Tesis guardada')
+    }
+    const error = () => {
+        message.error('Algo salio mal')
+    }
     const handleSubmit = async (values: any) => {
         const result = await uploadTesisFile(firestore, values, tesisFile)
-        console.log(result)
+        result ? (messageSuccess(), form.resetFields()) : error()
     }
     return (
         <div className="new-tesis-root">
             <Card>
                 <Space direction="vertical">
-                    <Form onFinish={handleSubmit} name="uploadTesis">
+                    <Form onFinish={handleSubmit} name="uploadTesis" form={form}>
                         <Form.Item name="schoolName">
                             <Select defaultValue="Selecciona una carrera" style={{ width: 500 }}>
-                                <Option value="Ingenieria en sistemas">Ingenieria en sistemas </Option>
-                                <Option value="Nutrición">Nutrición</Option>
-                                <Option value="Teología">Teología</Option>
-                                <Option value="Diseño Gráfico">Diseño Gráfico</Option>
-                                <Option value="Enfermeria">Enfermeria</Option>
-                                <Option value="Gastronomía">Gastronomía</Option>
-                                <Option value="Contabilidad">Contabilidad</Option>
-                                <Option value="Maestria">Maestria</Option>
+                                {Object.values(SchoolNames).map((name) => (
+                                    <Option key={name} value={name}>
+                                        {name}
+                                    </Option>
+                                ))}
                             </Select>
                         </Form.Item>
                         <Form.Item name="pdfTesis">
@@ -60,7 +66,7 @@ const NewTesis: FunctionComponent = () => {
                                     </Button>
                                 </Form.Item>
                                 <Form.Item>
-                                    <Button type="primary" onClick={handleClickSeeTesis}>
+                                    <Button type="primary" onClick={handleClickReturnToList}>
                                         Ver lista de tesis
                                     </Button>
                                 </Form.Item>

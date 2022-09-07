@@ -1,31 +1,34 @@
-import { Button, Card, Input, Table, Space } from 'antd'
+import { Button, Card, Input, Select, Space, Table } from 'antd'
+import { ColumnsType } from 'antd/es/table'
 import { FunctionComponent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ColumnsType } from 'antd/es/table'
 import { useFirestore } from 'reactfire'
 
+import { SchoolNames, Tesis } from '../../../../Types/tesis'
 import { getTesis } from '../../../API/tesis'
-import { Tesis } from '../../../../Types/tesis'
 import './TesisList.css'
 
 interface TesisListFilters {
-    schoolName: string
+    schoolName: SchoolNames[]
     description: string
 }
 
 const TesisList: FunctionComponent = () => {
-    const { Search } = Input
+    const { Option } = Select
     const firestore = useFirestore()
     const navigate = useNavigate()
     const [tesis, setTesis] = useState<Tesis[]>([])
-    const [filters, setFilters] = useState<TesisListFilters>({ schoolName: '', description: '' })
+    const [loading, setLoading] = useState(false)
+    const [filters, setFilters] = useState<TesisListFilters>({ schoolName: [], description: '' })
 
     useEffect(() => {
         getData()
     }, [])
 
     const getData = async () => {
+        setLoading(true)
         setTesis(await getTesis(firestore))
+        setLoading(false)
     }
 
     const columns: ColumnsType<Tesis> = [
@@ -59,9 +62,6 @@ const TesisList: FunctionComponent = () => {
     const handleClickLogin = () => {
         navigate('/newTesis')
     }
-    const onSearch = () => {
-        console.log('buscando')
-    }
 
     return (
         <Card>
@@ -77,17 +77,26 @@ const TesisList: FunctionComponent = () => {
                         onChange={(event) => setFilters({ ...filters, description: event.target.value })}
                         allowClear
                     />
-                    <Input
-                        placeholder="Buscar escuela"
-                        onChange={(event) => setFilters({ ...filters, schoolName: event.target.value })}
+                    <Select
+                        mode="multiple"
+                        placeholder="Buscar por escuela"
+                        style={{ minWidth: 200 }}
+                        onChange={(event: SchoolNames[]) => setFilters({ ...filters, schoolName: event })}
                         allowClear
-                    />
+                    >
+                        {Object.values(SchoolNames).map((name) => (
+                            <Option key={name} value={name}>
+                                {name}
+                            </Option>
+                        ))}
+                    </Select>
                 </Space>
             </div>
             <Table<Tesis>
                 rowKey="id"
                 size="small"
                 pagination={false}
+                loading={loading}
                 bordered
                 dataSource={tesis.filter((_tesis) => {
                     if (filters.description) {
@@ -95,12 +104,11 @@ const TesisList: FunctionComponent = () => {
                             return false
                         }
                     }
-                    if (filters.schoolName) {
-                        if (!_tesis.schoolName.toLowerCase().includes(filters.schoolName.toLowerCase())) {
+                    if (filters.schoolName.length > 0) {
+                        if (!filters.schoolName.some((_schoolName) => _tesis.schoolName.includes(_schoolName))) {
                             return false
                         }
                     }
-
                     return true
                 })}
                 columns={columns}

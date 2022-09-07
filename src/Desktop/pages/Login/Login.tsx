@@ -1,6 +1,6 @@
-import { Button, Card, Form, Input, Space } from 'antd'
+import { Button, Card, Form, Input, Space, notification } from 'antd'
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from 'reactfire'
 
@@ -9,14 +9,37 @@ import './Login.css'
 const Login: FunctionComponent = () => {
     const auth = useAuth()
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     const onFinish = async (values: any) => {
+        setLoading(true)
         await signInWithEmailAndPassword(auth, values.username, values.password)
             .then(() => {
                 navigate('/newTesis')
             })
             .catch((error) => {
-                console.log(error.code)
+                let errorMessage = ''
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage = 'El Usuario no Existe'
+                        break
+                    case 'auth/wrong-password':
+                        errorMessage = 'Contraseña Incorrecta'
+                        break
+                    case 'auth/too-many-requests':
+                        errorMessage =
+                            'El acceso a esta cuenta se ha desactivado temporalmente debido a muchos intentos fallidos de inicio de sesión. Puede restaurarlo inmediatamente restableciendo su contraseña o puede intentarlo de nuevo más tarde'
+                        break
+                    default:
+                        errorMessage = error.message
+                        break
+                }
+                notification.error({
+                    message: 'Error',
+                    description: errorMessage
+                })
+                console.log(error.code, error.message)
+                setLoading(false)
             })
     }
 
@@ -35,11 +58,11 @@ const Login: FunctionComponent = () => {
                             style={{ textAlign: 'center' }}
                         >
                             <Form.Item label="Usuario" name="username" rules={[{ required: true, message: 'Ingrese un usuario' }]}>
-                                <Input />
+                                <Input disabled={loading} />
                             </Form.Item>
 
                             <Form.Item label="Contraseña" name="password" rules={[{ required: true, message: 'Ingrese su contraseña' }]}>
-                                <Input.Password />
+                                <Input.Password disabled={loading} />
                             </Form.Item>
 
                             <div className="app-align-center">

@@ -10,3 +10,13 @@ export const DEFAULT_TESIS: Tesis = {
     file: '',
     description: ''
 }
+export enum SchoolNames {
+    systemsEngineering = 'Ingeniería en sistemas',
+    nutrition = 'Nutrición',
+    theology = 'Teología',
+    GraphicDesign = 'Diseño Gráfico',
+    Nursing = 'Enfermeria',
+    Gastronomy = 'Gastronomía',
+    Accounting = 'Contabilidad',
+    masterDegree = 'Maestría'
+}
