@@ -53,7 +53,7 @@ const NewTesis: FunctionComponent = () => {
                             </Select>
                         </Form.Item>
                         <Form.Item name="pdfTesis">
-                            <Input type={'file'} style={{ width: 500 }} onChange={handleFile} />
+                            <Input type={'file'} style={{ width: 500 }} onChange={handleFile} accept=".pdf" />
                         </Form.Item>
                         <Form.Item name="description">
                             <TextArea placeholder="Descripción" rows={4} style={{ width: 500 }} />
