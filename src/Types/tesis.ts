@@ -18,5 +18,6 @@ export enum SchoolNames {
     Nursing = 'Enfermeria',
     Gastronomy = 'Gastronomía',
     Accounting = 'Contabilidad',
-    masterDegree = 'Maestría'
+    masterDegree = 'Maestría',
+    educationalSciences = 'ciencias de la educación'
 }

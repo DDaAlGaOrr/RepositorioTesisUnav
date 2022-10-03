@@ -50,6 +50,9 @@ export const uploadTesisFile = async (firestore: Firestore, newTesis: Tesis, fil
             case SchoolNames.theology:
                 filesRef = ref(storage, `tesis/teologia/${filename}.pdf`)
                 break
+            case SchoolNames.educationalSciences:
+                filesRef = ref(storage, `tesis/cienciasEducacion/${filename}.pdf`)
+                break
 
             default:
                 console.log('no encotrado')
