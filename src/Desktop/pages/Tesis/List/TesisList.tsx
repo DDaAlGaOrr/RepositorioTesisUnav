@@ -67,7 +67,7 @@ const TesisList: FunctionComponent = () => {
         <Card>
             <div className="app-align-right app-margin-bottom">
                 <Button type="primary" onClick={handleClickLogin}>
-                    Agregar nueva tesis
+                    Iniciar sesión
                 </Button>
             </div>
             <div className="app-margin-bottom filters-display-flex" style={{ width: '750px' }}>
